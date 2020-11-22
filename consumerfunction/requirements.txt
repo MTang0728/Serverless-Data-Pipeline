@@ -1,0 +1,6 @@
+ikp3db==1.1.4
+pandas
+pytrends
+boto3
+botocore
+python-json-logger
