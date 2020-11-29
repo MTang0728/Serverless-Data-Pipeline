@@ -40,3 +40,5 @@ From each post, we then scrap the brand name and post, and save them in a table 
 - This funtion moves messages from AWS SQS one at a time, and processes each message with the Google Trend API before saving the final result in AWS S3.
 - Google Trend API accepts a brand name and returns the brand's trend for the day in a dataframe. This dataframe contains a timetamp column and the corresponding trend value at each timestamp.
 - This Lambda function has a trigger set up that goes off everytime there is a new message in AWS SQS.
+=======
+This project aims to automate the process of scrapping deals from Dealmoon.om, finding the brand's corresponding trend and storing data in S3 bucket on a daily basis. Not that this repo encapsulates the backend the [**Brand Trend Webapp**](https://github.com/MTang0728/AWS-BrandTrend-webapp)
