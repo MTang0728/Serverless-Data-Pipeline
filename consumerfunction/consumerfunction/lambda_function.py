@@ -60,10 +60,11 @@ def delete_sqs_msg(queue_name, receipt_handle):
     return response
 
 
-def trend_lookup(name, time_window):
+def trend_lookup(name, time_window, posttime):
     keywords = [name]
     pytrends.build_payload(kw_list=keywords, cat=0, timeframe=time_window, geo='US')
     trend = pytrends.interest_over_time()
+    trend = trend[posttime]
     # drop unused column
     trend = trend.drop('isPartial', axis = 1)
     return trend
@@ -107,7 +108,7 @@ def lambda_handler(event, context):
         LOG.info(f"Deleted SQS receipt_handle {receipt_handle} with res {res}", extra=extra_logging)
 
     LOG.info(f"Looking up trend with values: {names}")
-    df = trend_lookup(brand_name, 'now 1-d')
+    df = trend_lookup(brand_name, 'now 1-d', post_time)
     
     file_name = post_time + '_' + brand_name
 
