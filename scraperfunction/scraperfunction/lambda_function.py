@@ -101,23 +101,31 @@ def scraper(table, pages):
         req = urllib.request.Request(url, headers=hdr)
         response = urlopen(req)
         soup = BeautifulSoup(response.read(), 'html.parser')
+        
+        item_count = 0
+        max_items = 10
 
         for article in soup.find_all('div', class_ = "right-cnt"):
-            try:
-                # get brand name
-                brandname = article.find('a', class_ = 'ib ib-store j-store').text
-                brandname = name_clean(brandname)
-                # get time
-                time = article.find('span', class_ = 'ib published-date').get_text()
-                post_time = time_convert(time)
-                
-                # update dataframe
-                result = result.append(pd.DataFrame({'brandname':[brandname], 'time':[post_time]}),
-                                                     ignore_index=True)
-                
-                
-            except:
+            if item_count < max_items:
+                try:
+                    # get brand name
+                    brandname = article.find('a', class_ = 'ib ib-store j-store').text
+                    brandname = name_clean(brandname)
+                    # get time
+                    time = article.find('span', class_ = 'ib published-date').get_text()
+                    post_time = time_convert(time)
+                    
+                    # update dataframe
+                    result = result.append(pd.DataFrame({'brandname':[brandname], 'time':[post_time]}),
+                                                         ignore_index=True)
+                    item_count = item_count + 1
+                    pass
+                except:
+                    pass
                 pass
+            pass
+        pass
+            
     
     # call function to fill dynamoDB
     result.drop_duplicates(inplace = True)
